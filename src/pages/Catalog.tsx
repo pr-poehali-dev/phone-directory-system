@@ -15,35 +15,35 @@ interface Product {
 const products: Product[] = [
   {
     id: 1,
-    name: 'Chocolate Delight',
-    category: 'Traditional Cakes',
+    name: 'Шоколадное наслаждение',
+    category: 'Классические торты',
     price: 2500,
     image: 'https://cdn.poehali.dev/projects/fe67fa94-9243-43b6-9b0e-7640dbe53783/files/2ad5badd-6757-43b5-8d8a-732026f6581b.jpg',
-    description: 'Rich chocolate cake with cream topping and chocolate shavings'
+    description: 'Нежный шоколадный торт с кремовой начинкой и шоколадной стружкой'
   },
   {
     id: 2,
-    name: 'Fruit Paradise',
-    category: 'Birthday Cakes',
+    name: 'Фруктовый рай',
+    category: 'Праздничные торты',
     price: 3200,
     image: 'https://cdn.poehali.dev/projects/fe67fa94-9243-43b6-9b0e-7640dbe53783/files/7fac26b6-0942-4886-bdc9-f1faa319793d.jpg',
-    description: 'Fresh fruit cheesecake with orange and kiwi topping'
+    description: 'Свежий чизкейк с апельсинами и киви'
   },
   {
     id: 3,
-    name: 'Berry Dream',
-    category: 'Birthday Cakes',
+    name: 'Ягодная мечта',
+    category: 'Праздничные торты',
     price: 2800,
     image: 'https://cdn.poehali.dev/projects/fe67fa94-9243-43b6-9b0e-7640dbe53783/files/c1cc298e-d26d-4266-a487-806314491deb.jpg',
-    description: 'White cream cake with fresh strawberries and raspberries'
+    description: 'Белоснежный торт со свежей клубникой и малиной'
   },
   {
     id: 4,
-    name: 'Grand Celebration',
-    category: 'Birthday Cakes',
+    name: 'Грандиозное торжество',
+    category: 'Праздничные торты',
     price: 4500,
     image: 'https://cdn.poehali.dev/projects/fe67fa94-9243-43b6-9b0e-7640dbe53783/files/25e0fc35-ba1f-4083-8730-ea738691baf5.jpg',
-    description: 'Three-tier golden cake with chocolate glaze and roses'
+    description: 'Трехъярусный золотой торт с шоколадом и розами'
   }
 ];
 
@@ -51,9 +51,9 @@ const Catalog = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [cart, setCart] = useState<number[]>([]);
 
-  const categories = ['All', 'Traditional Cakes', 'Birthday Cakes', 'Cupcakes'];
+  const categories = ['Все', 'Классические торты', 'Праздничные торты', 'Капкейки'];
 
-  const filteredProducts = selectedCategory === 'All' 
+  const filteredProducts = selectedCategory === 'Все' 
     ? products 
     : products.filter(p => p.category === selectedCategory);
 
@@ -67,10 +67,10 @@ const Catalog = () => {
         <nav className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-8">
-              <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">Home</Link>
-              <Link to="/catalog" className="text-[#B76E79] font-semibold">Catalog</Link>
-              <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">About Us</Link>
-              <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">Contact us</Link>
+              <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">Главная</Link>
+              <Link to="/catalog" className="text-[#B76E79] font-semibold">Каталог</Link>
+              <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">О нас</Link>
+              <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">Контакты</Link>
             </div>
             <div className="relative">
               <Link to="/checkout" className="flex items-center gap-2 text-gray-700 hover:text-[#B76E79] transition-colors">
@@ -89,10 +89,10 @@ const Catalog = () => {
       <div className="container mx-auto px-6 py-12">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-4">
-            <span className="text-[#B76E79]">Our </span>
-            <span className="text-[#6B4E3D]">Cakes</span>
+            <span className="text-[#B76E79]">Наши </span>
+            <span className="text-[#6B4E3D]">торты</span>
           </h1>
-          <p className="text-gray-600 text-xl italic">Handcrafted with love and premium ingredients</p>
+          <p className="text-gray-600 text-xl italic">Сделано с любовью из премиум ингредиентов</p>
         </div>
 
         <div className="flex justify-center gap-4 mb-12 flex-wrap">
@@ -136,7 +136,7 @@ const Catalog = () => {
                     className="bg-[#B76E79] hover:bg-[#A05F6A] text-white"
                   >
                     <Icon name="ShoppingCart" size={18} className="mr-2" />
-                    Add
+                    Добавить
                   </Button>
                 </div>
               </div>
@@ -157,24 +157,24 @@ const Catalog = () => {
               <div className="bg-[#F5D4A6] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Icon name="Award" size={40} className="text-[#B76E79]" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Premium Quality</h3>
-              <p className="text-gray-600">Only the finest ingredients in every cake</p>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Премиум качество</h3>
+              <p className="text-gray-600">Только лучшие ингредиенты в каждом торте</p>
             </div>
             
             <div className="text-center">
               <div className="bg-[#F5D4A6] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Icon name="Truck" size={40} className="text-[#B76E79]" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Fast Delivery</h3>
-              <p className="text-gray-600">Same day delivery across the city</p>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Быстрая доставка</h3>
+              <p className="text-gray-600">Доставка в день заказа по всему городу</p>
             </div>
             
             <div className="text-center">
               <div className="bg-[#F5D4A6] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Icon name="Heart" size={40} className="text-[#B76E79]" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">Made with Love</h3>
-              <p className="text-gray-600">Every cake is a work of art</p>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Сделано с любовью</h3>
+              <p className="text-gray-600">Каждый торт — это произведение искусства</p>
             </div>
           </div>
         </div>
@@ -187,7 +187,7 @@ const Catalog = () => {
             </p>
           </div>
           <p className="text-gray-600 text-sm">
-            Best Cakes © 2013 • <a href="#" className="text-[#B76E79] hover:underline">Privacy policy</a>
+            Best Cakes © 2013 • <a href="#" className="text-[#B76E79] hover:underline">Политика конфиденциальности</a>
           </p>
         </footer>
       </div>

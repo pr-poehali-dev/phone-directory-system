@@ -17,14 +17,14 @@ const Checkout = () => {
   const [cartItems] = useState<CartItem[]>([
     {
       id: 1,
-      name: 'Chocolate Delight',
+      name: 'Шоколадное наслаждение',
       price: 2500,
       image: 'https://cdn.poehali.dev/projects/fe67fa94-9243-43b6-9b0e-7640dbe53783/files/2ad5badd-6757-43b5-8d8a-732026f6581b.jpg',
       quantity: 1
     },
     {
       id: 2,
-      name: 'Fruit Paradise',
+      name: 'Фруктовый рай',
       price: 3200,
       image: 'https://cdn.poehali.dev/projects/fe67fa94-9243-43b6-9b0e-7640dbe53783/files/7fac26b6-0942-4886-bdc9-f1faa319793d.jpg',
       quantity: 2
@@ -71,11 +71,11 @@ const Checkout = () => {
           <div className="bg-green-100 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
             <Icon name="Check" size={48} className="text-green-600" />
           </div>
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Order Confirmed!</h2>
-          <p className="text-gray-600 mb-2">Thank you for your order!</p>
-          <p className="text-gray-600 mb-6">We'll contact you shortly to confirm delivery details.</p>
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">Заказ подтвержден!</h2>
+          <p className="text-gray-600 mb-2">Спасибо за ваш заказ!</p>
+          <p className="text-gray-600 mb-6">Мы свяжемся с вами в ближайшее время для подтверждения деталей доставки.</p>
           <div className="text-4xl mb-4">🎉</div>
-          <p className="text-sm text-gray-500">Redirecting to homepage...</p>
+          <p className="text-sm text-gray-500">Переход на главную страницу...</p>
         </div>
       </div>
     );
@@ -87,9 +87,9 @@ const Checkout = () => {
         <nav className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-8">
-              <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">Home</Link>
-              <Link to="/catalog" className="text-gray-700 hover:text-[#B76E79] transition-colors">Catalog</Link>
-              <Link to="/checkout" className="text-[#B76E79] font-semibold">Checkout</Link>
+              <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">Главная</Link>
+              <Link to="/catalog" className="text-gray-700 hover:text-[#B76E79] transition-colors">Каталог</Link>
+              <Link to="/checkout" className="text-[#B76E79] font-semibold">Оформление заказа</Link>
             </div>
           </div>
         </nav>
@@ -98,9 +98,9 @@ const Checkout = () => {
       <div className="container mx-auto px-6 py-12">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-4">
-            <span className="text-[#B76E79]">Checkout</span>
+            <span className="text-[#B76E79]">Оформление заказа</span>
           </h1>
-          <p className="text-gray-600 text-xl italic">Complete your order</p>
+          <p className="text-gray-600 text-xl italic">Завершите ваш заказ</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -108,26 +108,26 @@ const Checkout = () => {
             <div className="bg-white rounded-3xl p-8 shadow-lg mb-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
                 <Icon name="User" size={28} className="text-[#B76E79] mr-3" />
-                Personal Information
+                Личные данные
               </h2>
               
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-700 mb-2 font-semibold">Full Name *</label>
+                    <label className="block text-gray-700 mb-2 font-semibold">Полное имя *</label>
                     <Input
                       type="text"
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleInputChange}
-                      placeholder="John Doe"
+                      placeholder="Иванов Иван Иванович"
                       required
                       className="w-full"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-gray-700 mb-2 font-semibold">Phone *</label>
+                    <label className="block text-gray-700 mb-2 font-semibold">Телефон *</label>
                     <Input
                       type="tel"
                       name="phone"
@@ -141,7 +141,7 @@ const Checkout = () => {
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 mb-2 font-semibold">Email *</label>
+                  <label className="block text-gray-700 mb-2 font-semibold">Электронная почта *</label>
                   <Input
                     type="email"
                     name="email"
@@ -156,18 +156,18 @@ const Checkout = () => {
                 <div className="pt-4">
                   <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
                     <Icon name="MapPin" size={24} className="text-[#B76E79] mr-3" />
-                    Delivery Address
+                    Адрес доставки
                   </h3>
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 mb-2 font-semibold">Street Address *</label>
+                  <label className="block text-gray-700 mb-2 font-semibold">Улица и номер дома *</label>
                   <Input
                     type="text"
                     name="address"
                     value={formData.address}
                     onChange={handleInputChange}
-                    placeholder="123 Main Street, Apt 4B"
+                    placeholder="ул. Пушкина, д. 10, кв. 25"
                     required
                     className="w-full"
                   />
@@ -175,26 +175,26 @@ const Checkout = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-700 mb-2 font-semibold">City *</label>
+                    <label className="block text-gray-700 mb-2 font-semibold">Город *</label>
                     <Input
                       type="text"
                       name="city"
                       value={formData.city}
                       onChange={handleInputChange}
-                      placeholder="Chicago"
+                      placeholder="Москва"
                       required
                       className="w-full"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-gray-700 mb-2 font-semibold">ZIP Code *</label>
+                    <label className="block text-gray-700 mb-2 font-semibold">Индекс *</label>
                     <Input
                       type="text"
                       name="zipCode"
                       value={formData.zipCode}
                       onChange={handleInputChange}
-                      placeholder="60604"
+                      placeholder="123456"
                       required
                       className="w-full"
                     />
@@ -204,13 +204,13 @@ const Checkout = () => {
                 <div className="pt-4">
                   <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
                     <Icon name="Calendar" size={24} className="text-[#B76E79] mr-3" />
-                    Delivery Schedule
+                    Время доставки
                   </h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-gray-700 mb-2 font-semibold">Delivery Date *</label>
+                    <label className="block text-gray-700 mb-2 font-semibold">Дата доставки *</label>
                     <Input
                       type="date"
                       name="deliveryDate"
@@ -222,7 +222,7 @@ const Checkout = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-gray-700 mb-2 font-semibold">Preferred Time *</label>
+                    <label className="block text-gray-700 mb-2 font-semibold">Желаемое время *</label>
                     <Input
                       type="time"
                       name="deliveryTime"
@@ -235,12 +235,12 @@ const Checkout = () => {
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 mb-2 font-semibold">Additional Comments</label>
+                  <label className="block text-gray-700 mb-2 font-semibold">Дополнительные пожелания</label>
                   <textarea
                     name="comment"
                     value={formData.comment}
                     onChange={handleInputChange}
-                    placeholder="Special instructions, allergies, etc..."
+                    placeholder="Особые пожелания, аллергии и т.д."
                     rows={4}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-[#B76E79]"
                   ></textarea>
@@ -251,7 +251,7 @@ const Checkout = () => {
                   className="w-full bg-[#B76E79] hover:bg-[#A05F6A] text-white py-6 text-lg font-semibold"
                 >
                   <Icon name="CheckCircle" size={24} className="mr-2" />
-                  Place Order - {finalTotal} ₽
+                  Оформить заказ - {finalTotal} ₽
                 </Button>
               </form>
             </div>
@@ -261,7 +261,7 @@ const Checkout = () => {
             <div className="bg-white rounded-3xl p-8 shadow-lg sticky top-8">
               <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
                 <Icon name="ShoppingCart" size={28} className="text-[#B76E79] mr-3" />
-                Order Summary
+                Итого к оплате
               </h2>
 
               <div className="space-y-4 mb-6">
@@ -274,7 +274,7 @@ const Checkout = () => {
                     />
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-800">{item.name}</h3>
-                      <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                      <p className="text-sm text-gray-600">Кол-во: {item.quantity}</p>
                     </div>
                     <div className="text-right">
                       <p className="font-bold text-[#B76E79]">{item.price * item.quantity} ₽</p>
@@ -285,15 +285,15 @@ const Checkout = () => {
 
               <div className="space-y-3 border-t border-gray-200 pt-4">
                 <div className="flex justify-between text-gray-700">
-                  <span>Subtotal:</span>
+                  <span>Промежуточный итог:</span>
                   <span className="font-semibold">{totalAmount} ₽</span>
                 </div>
                 <div className="flex justify-between text-gray-700">
-                  <span>Delivery Fee:</span>
+                  <span>Доставка:</span>
                   <span className="font-semibold">{deliveryFee} ₽</span>
                 </div>
                 <div className="flex justify-between text-xl font-bold text-gray-800 pt-3 border-t border-gray-300">
-                  <span>Total:</span>
+                  <span>Итого:</span>
                   <span className="text-[#B76E79]">{finalTotal} ₽</span>
                 </div>
               </div>
@@ -302,8 +302,8 @@ const Checkout = () => {
                 <div className="flex items-start gap-3">
                   <Icon name="Info" size={20} className="text-[#B76E79] mt-1" />
                   <div className="text-sm text-gray-700">
-                    <p className="font-semibold mb-1">Free delivery on orders over 5000 ₽</p>
-                    <p className="text-xs">Your order will be prepared fresh on the delivery day</p>
+                    <p className="font-semibold mb-1">Бесплатная доставка при заказе от 5000 ₽</p>
+                    <p className="text-xs">Ваш заказ будет свежеприготовлен в день доставки</p>
                   </div>
                 </div>
               </div>
@@ -319,7 +319,7 @@ const Checkout = () => {
             </p>
           </div>
           <p className="text-gray-600 text-sm">
-            Best Cakes © 2013 • <a href="#" className="text-[#B76E79] hover:underline">Privacy policy</a>
+            Best Cakes © 2013 • <a href="#" className="text-[#B76E79] hover:underline">Политика конфиденциальности</a>
           </p>
         </footer>
       </div>
