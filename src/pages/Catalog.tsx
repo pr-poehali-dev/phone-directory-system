@@ -73,14 +73,14 @@ const Catalog = () => {
               <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">Contact us</Link>
             </div>
             <div className="relative">
-              <button className="flex items-center gap-2 text-gray-700 hover:text-[#B76E79] transition-colors">
+              <Link to="/checkout" className="flex items-center gap-2 text-gray-700 hover:text-[#B76E79] transition-colors">
                 <Icon name="ShoppingCart" size={24} />
                 {cart.length > 0 && (
                   <span className="absolute -top-2 -right-2 bg-[#B76E79] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                     {cart.length}
                   </span>
                 )}
-              </button>
+              </Link>
             </div>
           </div>
         </nav>
