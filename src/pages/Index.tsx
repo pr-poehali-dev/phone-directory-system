@@ -1,366 +1,278 @@
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Link } from 'react-router-dom';
 import Icon from '@/components/ui/icon';
 
-interface Department {
-  id: number;
-  name: string;
-  head_name: string;
-  description: string;
-}
-
-interface Employee {
-  id: number;
-  phone: string;
-  last_name: string;
-  first_name: string;
-  middle_name: string;
-  department_id: number;
-  department_name?: string;
-  position: string;
-  office_number: string;
-}
-
 const Index = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [currentTab, setCurrentTab] = useState('home');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [departments, setDepartments] = useState<Department[]>([]);
-  const [employees, setEmployees] = useState<Employee[]>([]);
-  const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>([]);
-
-  useEffect(() => {
-    fetchDepartments();
-  }, []);
-
-  const fetchDepartments = async () => {
-    try {
-      const response = await fetch('https://functions.poehali.dev/a34904d7-5ea4-48ec-a473-be3c1f9ecf6e');
-      const data = await response.json();
-      setDepartments(data.departments);
-    } catch (error) {
-      console.error('Error fetching departments:', error);
-    }
-  };
-
-  const fetchEmployees = async () => {
-    try {
-      const response = await fetch('https://functions.poehali.dev/6a91c806-1320-4758-a181-abe84650a1d8');
-      const data = await response.json();
-      setEmployees(data.employees);
-      setFilteredEmployees(data.employees);
-    } catch (error) {
-      console.error('Error fetching employees:', error);
-    }
-  };
-
-  const handleLogin = async () => {
-    if (!username || !password) return;
-    
-    try {
-      const response = await fetch('https://functions.poehali.dev/f72e5acd-ab2e-4aae-b183-a268adf7b14a', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-      });
-      
-      const data = await response.json();
-      
-      if (response.ok && data.success) {
-        setIsAuthenticated(true);
-        setCurrentTab('directory');
-        fetchEmployees();
-      } else {
-        alert('Неверный логин или пароль');
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      alert('Ошибка при входе в систему');
-    }
-  };
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setUsername('');
-    setPassword('');
-    setCurrentTab('home');
-    setEmployees([]);
-    setFilteredEmployees([]);
-  };
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    if (!query.trim()) {
-      setFilteredEmployees(employees);
-      return;
-    }
-
-    const lowerQuery = query.toLowerCase();
-    const filtered = employees.filter(emp => 
-      emp.last_name.toLowerCase().includes(lowerQuery) ||
-      emp.first_name.toLowerCase().includes(lowerQuery) ||
-      emp.middle_name.toLowerCase().includes(lowerQuery) ||
-      emp.phone.includes(query) ||
-      emp.position.toLowerCase().includes(lowerQuery) ||
-      emp.department_name?.toLowerCase().includes(lowerQuery) ||
-      emp.office_number.includes(query)
-    );
-    setFilteredEmployees(filtered);
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div className="container mx-auto px-6 py-4">
+    <div className="min-h-screen bg-[#F5E6D3]">
+      <header className="bg-white shadow-sm">
+        <nav className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Icon name="Building2" size={32} className="text-primary" />
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Телефонный справочник</h1>
-                <p className="text-sm text-gray-500">ООО "ТехноКомпания"</p>
-              </div>
+            <div className="flex items-center space-x-8">
+              <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">Home</Link>
+              <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">About Us</Link>
+              <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">Our Gallery</Link>
+              <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">Services</Link>
+              <Link to="/" className="text-gray-700 hover:text-[#B76E79] transition-colors">Contact us</Link>
             </div>
-            
-            <nav className="flex items-center gap-2">
-              {isAuthenticated ? (
-                <>
-                  <Button variant="ghost" onClick={() => setCurrentTab('home')}>
-                    <Icon name="Home" size={18} className="mr-2" />
-                    Главная
-                  </Button>
-                  <Button variant="ghost" onClick={() => setCurrentTab('directory')}>
-                    <Icon name="Users" size={18} className="mr-2" />
-                    Справочник
-                  </Button>
-                  <Button variant="outline" onClick={handleLogout}>
-                    <Icon name="LogOut" size={18} className="mr-2" />
-                    Выход
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button variant="ghost" onClick={() => setCurrentTab('home')}>
-                    Главная
-                  </Button>
-                  <Button onClick={() => setCurrentTab('login')}>
-                    Войти
-                  </Button>
-                </>
-              )}
-            </nav>
           </div>
-        </div>
+        </nav>
       </header>
 
-      <main className="container mx-auto px-6 py-8">
-        {currentTab === 'home' && (
-          <div className="animate-fade-in space-y-8">
-            <section className="text-center py-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Добро пожаловать в корпоративный справочник
+      <div className="container mx-auto px-6 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+          <div>
+            <div className="mb-4">
+              <div className="inline-block bg-[#B76E79] text-white px-4 py-2 rounded mb-2">history</div>
+              <div className="inline-block bg-[#B76E79] text-white px-4 py-2 rounded mb-2 ml-2">offers</div>
+              <div className="inline-block bg-[#B76E79] text-white px-4 py-2 rounded mb-2">news</div>
+              <div className="inline-block bg-[#9B7E6B] text-white px-4 py-2 rounded ml-2">fresh</div>
+              <div className="inline-block bg-[#9B7E6B] text-white px-4 py-2 rounded ml-2">archive</div>
+            </div>
+            
+            <div className="flex items-center mb-6">
+              <div className="w-16 h-16 bg-[#F5D4A6] rounded-t-full flex items-center justify-center mr-4">
+                <div className="w-12 h-12 bg-[#E8B870] rounded-t-full"></div>
+              </div>
+              <div>
+                <h1 className="text-6xl font-bold">
+                  <span className="text-[#B76E79]">Best</span>
+                  <span className="text-[#6B4E3D]">Cakes</span>
+                </h1>
+                <p className="text-gray-600 italic text-xl">Private Bakery Website</p>
+              </div>
+            </div>
+
+            <div className="flex space-x-3 mb-8">
+              <div className="w-8 h-8 border-2 border-[#D4A574] rounded-full flex items-center justify-center">
+                <Icon name="Twitter" size={16} className="text-[#D4A574]" />
+              </div>
+              <div className="w-8 h-8 border-2 border-[#D4A574] rounded-full flex items-center justify-center">
+                <Icon name="Facebook" size={16} className="text-[#D4A574]" />
+              </div>
+              <div className="w-8 h-8 border-2 border-[#D4A574] rounded-full flex items-center justify-center">
+                <Icon name="Instagram" size={16} className="text-[#D4A574]" />
+              </div>
+              <div className="w-8 h-8 border-2 border-[#D4A574] rounded-full flex items-center justify-center">
+                <Icon name="Rss" size={16} className="text-[#D4A574]" />
+              </div>
+            </div>
+          </div>
+
+          <div className="relative">
+            <img 
+              src="https://cdn.poehali.dev/projects/fe67fa94-9243-43b6-9b0e-7640dbe53783/files/25e0fc35-ba1f-4083-8730-ea738691baf5.jpg" 
+              alt="Main Cake"
+              className="w-full max-w-md mx-auto"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          <Link to="/catalog" className="block">
+            <div className="bg-[#B76E79] hover:bg-[#A05F6A] transition-colors rounded-3xl p-8 text-center text-white h-64 flex flex-col items-center justify-center">
+              <h3 className="text-4xl font-bold mb-2" style={{ fontFamily: 'cursive' }}>Traditional Cakes</h3>
+              <p className="text-lg italic mb-3">view photos</p>
+              <div className="w-10 h-10 border-2 border-white rounded-full flex items-center justify-center">
+                <Icon name="ChevronRight" size={20} />
+              </div>
+            </div>
+          </Link>
+
+          <Link to="/catalog" className="block">
+            <div className="bg-[#C8956E] hover:bg-[#B8855E] transition-colors rounded-3xl p-8 text-center text-white h-64 flex flex-col items-center justify-center">
+              <h3 className="text-4xl font-bold mb-2" style={{ fontFamily: 'cursive' }}>New! Cupcakes</h3>
+              <p className="text-lg italic mb-3">view gallery</p>
+              <div className="w-10 h-10 border-2 border-white rounded-full flex items-center justify-center">
+                <Icon name="ChevronRight" size={20} />
+              </div>
+            </div>
+          </Link>
+
+          <Link to="/catalog" className="block">
+            <div className="bg-[#E8B870] hover:bg-[#D8A860] transition-colors rounded-3xl p-8 text-center text-white h-64 flex flex-col items-center justify-center">
+              <h3 className="text-4xl font-bold mb-2" style={{ fontFamily: 'cursive' }}>Birthday Cakes</h3>
+              <p className="text-lg italic mb-3">view all</p>
+              <div className="w-10 h-10 border-2 border-white rounded-full flex items-center justify-center">
+                <Icon name="ChevronRight" size={20} />
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        <div className="bg-white rounded-3xl p-12 mb-16">
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center mb-4">
+              <div className="text-4xl">🌸</div>
+              <h2 className="text-4xl font-bold mx-4" style={{ fontFamily: 'cursive' }}>
+                <span className="text-[#6B4E3D]">Popular </span>
+                <span className="text-[#D4A574]">Cakes</span>
               </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Система для быстрого поиска контактной информации сотрудников организации
-              </p>
-            </section>
-
-            <section>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Наши отделы</h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                {departments.map((dept) => (
-                  <Card key={dept.id} className="hover-scale cursor-pointer">
-                    <CardHeader>
-                      <div className="flex items-start gap-4">
-                        <div className="bg-primary/10 p-3 rounded-lg">
-                          <Icon name="Building" size={24} className="text-primary" />
-                        </div>
-                        <div className="flex-1">
-                          <CardTitle className="text-xl mb-1">{dept.name}</CardTitle>
-                          <CardDescription className="flex items-center gap-2">
-                            <Icon name="User" size={14} />
-                            {dept.head_name}
-                          </CardDescription>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600">{dept.description}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </section>
-
-            <section className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg p-8 text-center">
-              <Icon name="Info" size={48} className="text-primary mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Для доступа к справочнику требуется авторизация
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Войдите в систему, чтобы получить доступ к полной базе контактов сотрудников
-              </p>
-              <Button size="lg" onClick={() => setCurrentTab('login')}>
-                <Icon name="LogIn" size={20} className="mr-2" />
-                Войти в систему
-              </Button>
-            </section>
+              <div className="text-4xl">🌸</div>
+            </div>
           </div>
-        )}
 
-        {currentTab === 'login' && !isAuthenticated && (
-          <div className="animate-fade-in max-w-md mx-auto">
-            <Card>
-              <CardHeader className="text-center">
-                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Icon name="Lock" size={32} className="text-primary" />
-                </div>
-                <CardTitle className="text-2xl">Вход в систему</CardTitle>
-                <CardDescription>
-                  Введите ваши учетные данные для доступа к справочнику
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Имя пользователя</label>
-                  <Input
-                    placeholder="Введите логин"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Пароль</label>
-                  <Input
-                    type="password"
-                    placeholder="Введите пароль"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                  />
-                </div>
-                <Button className="w-full" size="lg" onClick={handleLogin}>
-                  <Icon name="LogIn" size={20} className="mr-2" />
-                  Войти
-                </Button>
-                <div className="text-center text-sm text-gray-500 mt-4">
-                  <p>Демо доступ: admin / admin123</p>
-                  <p>или user / user123</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-
-        {currentTab === 'directory' && isAuthenticated && (
-          <div className="animate-fade-in space-y-6">
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <div className="flex items-center gap-4 mb-2">
-                <Icon name="Search" size={24} className="text-primary" />
-                <h2 className="text-2xl font-bold text-gray-900">Справочник сотрудников</h2>
-              </div>
-              <p className="text-gray-600 mb-6">
-                Найдено сотрудников: <span className="font-semibold">{filteredEmployees.length}</span>
-              </p>
-              
-              <div className="relative">
-                <Icon name="Search" size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <Input
-                  placeholder="Поиск по ФИО, должности, телефону или отделу..."
-                  className="pl-10"
-                  value={searchQuery}
-                  onChange={(e) => handleSearch(e.target.value)}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="mb-4 overflow-hidden rounded-2xl">
+                <img 
+                  src="https://cdn.poehali.dev/projects/fe67fa94-9243-43b6-9b0e-7640dbe53783/files/2ad5badd-6757-43b5-8d8a-732026f6581b.jpg"
+                  alt="Murse Ktreas"
+                  className="w-full h-48 object-cover"
                 />
               </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">MURSE KTREAS</h3>
+              <p className="text-[#C8956E] italic mb-3" style={{ fontFamily: 'cursive' }}>festique mauron tortigation</p>
+              <p className="text-gray-600 text-sm mb-4">
+                Becleasst merni vitaestart gualv kohya aset applicarbe ertyas nemo dprotabales.
+              </p>
+              <div className="text-4xl">🌼</div>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredEmployees.map((emp) => (
-                <Card key={emp.id} className="hover-scale">
-                  <CardHeader>
-                    <div className="flex items-start gap-4">
-                      <div className="bg-gradient-to-br from-primary/20 to-primary/10 w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Icon name="User" size={32} className="text-primary" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <CardTitle className="text-lg mb-1 truncate">
-                          {emp.last_name} {emp.first_name}
-                        </CardTitle>
-                        <CardDescription className="truncate">
-                          {emp.middle_name}
-                        </CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <Badge variant="secondary" className="mb-2">
-                        {emp.department_name}
-                      </Badge>
-                      <p className="text-sm font-medium text-gray-700">{emp.position}</p>
-                    </div>
-                    
-                    <div className="space-y-2 pt-2 border-t">
-                      <div className="flex items-center gap-2 text-sm">
-                        <Icon name="Phone" size={16} className="text-gray-400" />
-                        <a href={`tel:${emp.phone}`} className="text-primary hover:underline">
-                          {emp.phone}
-                        </a>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <Icon name="MapPin" size={16} className="text-gray-400" />
-                        Кабинет {emp.office_number}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            {filteredEmployees.length === 0 && (
-              <div className="text-center py-12">
-                <Icon name="SearchX" size={64} className="text-gray-300 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-700 mb-2">
-                  Ничего не найдено
-                </h3>
-                <p className="text-gray-500">
-                  Попробуйте изменить параметры поиска
-                </p>
+            <div className="text-center">
+              <div className="mb-4 overflow-hidden rounded-2xl">
+                <img 
+                  src="https://cdn.poehali.dev/projects/fe67fa94-9243-43b6-9b0e-7640dbe53783/files/7fac26b6-0942-4886-bdc9-f1faa319793d.jpg"
+                  alt="Resas Vitrae"
+                  className="w-full h-48 object-cover"
+                />
               </div>
-            )}
-          </div>
-        )}
-      </main>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">RESAS VITRAE</h3>
+              <p className="text-[#C8956E] italic mb-3" style={{ fontFamily: 'cursive' }}>festique mauron tortigation</p>
+              <p className="text-gray-600 text-sm mb-4">
+                Axetv erhusa enman sadert kertya ervakare ariysernio lapse vagetravles dgertosue.
+              </p>
+              <div className="text-4xl">🌼</div>
+            </div>
 
-      <footer className="bg-white border-t border-gray-200 mt-12">
-        <div className="container mx-auto px-6 py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-gray-600">
-              © 2024 ООО "ТехноКомпания". Все права защищены.
-            </p>
-            <div className="flex items-center gap-4 text-sm text-gray-500">
-              <a href="#" className="hover:text-primary transition-colors">
-                О компании
-              </a>
-              <span>•</span>
-              <a href="#" className="hover:text-primary transition-colors">
-                Контакты
-              </a>
-              <span>•</span>
-              <a href="#" className="hover:text-primary transition-colors">
-                Поддержка
-              </a>
+            <div className="text-center">
+              <div className="mb-4 overflow-hidden rounded-2xl">
+                <img 
+                  src="https://cdn.poehali.dev/projects/fe67fa94-9243-43b6-9b0e-7640dbe53783/files/c1cc298e-d26d-4266-a487-806314491deb.jpg"
+                  alt="Lehose Miyas"
+                  className="w-full h-48 object-cover"
+                />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">LEHOSE MIYAS</h3>
+              <p className="text-[#C8956E] italic mb-3" style={{ fontFamily: 'cursive' }}>festique mauron tortigation</p>
+              <p className="text-gray-600 text-sm mb-4">
+                Makerdas mevill vitaeseart aplcataessely kertya asee ertyas nemo dpretabales.
+              </p>
+              <div className="text-4xl">🌼</div>
             </div>
           </div>
         </div>
-      </footer>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div>
+            <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'cursive' }}>
+              <span className="text-[#6B4E3D]">Did You </span>
+              <span className="text-[#D4A574]">Know?</span>
+            </h3>
+            
+            <div className="mb-6">
+              <h4 className="text-lg font-semibold text-gray-800 mb-2">MYTRASE BETAYSA</h4>
+              <p className="text-gray-600 text-sm mb-3">
+                Consectetur, adipisci velit, sed quia non numquam eius modi tempora.
+              </p>
+            </div>
+
+            <div className="mb-6">
+              <h4 className="text-lg font-semibold text-gray-800 mb-2">KSERTGASE VERTYAERSA</h4>
+              <p className="text-gray-600 text-sm mb-3">
+                Zancdunt, ut labore et dolore magnam aliquam quaerat sit amet. Id enim ad minima veniam.
+              </p>
+              <button className="bg-[#B76E79] hover:bg-[#A05F6A] text-white px-6 py-2 rounded">
+                More
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'cursive' }}>
+              <span className="text-[#6B4E3D]">Useful </span>
+              <span className="text-[#D4A574]">Links</span>
+            </h3>
+            <ul className="space-y-2 text-gray-700">
+              <li className="flex items-center">
+                <Icon name="ChevronRight" size={16} className="text-[#D4A574] mr-2" />
+                ST AVERTAS DERO
+              </li>
+              <li className="flex items-center">
+                <Icon name="ChevronRight" size={16} className="text-[#D4A574] mr-2" />
+                NUERITO VAUALA HASSAV
+              </li>
+              <li className="flex items-center">
+                <Icon name="ChevronRight" size={16} className="text-[#D4A574] mr-2" />
+                VERTASI NEAKY KASTIDAE
+              </li>
+              <li className="flex items-center">
+                <Icon name="ChevronRight" size={16} className="text-[#D4A574] mr-2" />
+                VERBAE FASE LAGUSAE KASULA
+              </li>
+              <li className="flex items-center">
+                <Icon name="ChevronRight" size={16} className="text-[#D4A574] mr-2" />
+                AVERTELRO FEROSE
+              </li>
+              <li className="flex items-center">
+                <Icon name="ChevronRight" size={16} className="text-[#D4A574] mr-2" />
+                NUERITO VROKAUSE
+              </li>
+              <li className="flex items-center">
+                <Icon name="ChevronRight" size={16} className="text-[#D4A574] mr-2" />
+                MASSER LARGES LERTYASEA LAKSU
+              </li>
+              <li className="flex items-center">
+                <Icon name="ChevronRight" size={16} className="text-[#D4A574] mr-2" />
+                HERTASERY UKAUS VASE
+              </li>
+              <li className="flex items-center">
+                <Icon name="ChevronRight" size={16} className="text-[#D4A574] mr-2" />
+                IKAESA BERTAGERTIAS
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-2xl font-bold mb-4" style={{ fontFamily: 'cursive' }}>
+              <span className="text-[#6B4E3D]">Quick </span>
+              <span className="text-[#D4A574]">Message</span>
+            </h3>
+            <form className="space-y-4">
+              <input 
+                type="text" 
+                placeholder="Your Name"
+                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#B76E79]"
+              />
+              <textarea 
+                placeholder="Message"
+                rows={5}
+                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-[#B76E79]"
+              ></textarea>
+              <button 
+                type="submit"
+                className="bg-[#B76E79] hover:bg-[#A05F6A] text-white px-6 py-2 rounded"
+              >
+                Send
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <footer className="text-center py-8 border-t border-gray-300">
+          <div className="flex items-center justify-center mb-4">
+            <Icon name="Home" size={16} className="text-[#B76E79] mr-2" />
+            <p className="text-gray-600 text-sm">
+              28 Jackson Blvd Ste 1020 Chicago IL 60604-2340
+            </p>
+          </div>
+          <p className="text-gray-600 text-sm">
+            Best Cakes © 2013 • <a href="#" className="text-[#B76E79] hover:underline">Privacy policy</a>
+          </p>
+          <div className="absolute bottom-4 right-4">
+            <div className="text-4xl">🍂</div>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 };
